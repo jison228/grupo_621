@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityMain"
+    android:orientation="vertical"
+>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="20dip"
+        tools:ignore="MissingConstraints">
+
+        <EditText
+            android:id="@+id/txtNombre"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dip"
+            android:hint="Nombre"
+            android:inputType="text" />
+
+
+        <EditText
+            android:id="@+id/txtApellido"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dip"
+            android:hint="Apellido"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/numDni"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dip"
+            android:hint="Dni"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/txtEmail"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dip"
+            android:hint="Email"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/txtPass"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dip"
+            android:hint="Password"
+            android:inputType="textPassword" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dip">
+
+            <EditText
+                android:id="@+id/numComision"
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="15dip"
+                android:hint="Comision"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/numGrupo"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/numComision"
+                android:layout_marginTop="15dip"
+
+                android:layout_gravity="right"
+                android:layout_marginLeft="160dp"
+
+
+                android:hint="Grupo"
+                android:inputType="number" />
+        </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/btnRegistrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:text="Registrar" />
+
+        <Button
+            android:id="@+id/link_to_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:clickable="true"
+            android:onClick="accederALogin"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:text="Login" />
+
+        <TextView
+            android:id="@+id/textrespuesta"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dip"
+            android:layout_marginBottom="10dip"
+            android:gravity="center"
+            android:textColor="#0b84aa"
+            android:textSize="16dip" />
+
+
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

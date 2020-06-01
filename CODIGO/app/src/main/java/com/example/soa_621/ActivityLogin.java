@@ -116,4 +116,26 @@ public class ActivityLogin extends AppCompatActivity {
         }
         return isvalid;
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+    @Override
+    protected void onRestart()
+    {
+        super.onRestart();
+        registrarReciever();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registrarReciever();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+    }
 }

@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -35,6 +36,7 @@ public class MainScreen<Interval> extends AppCompatActivity implements SensorEve
     private TextView ultimaCaida;
     private TextView ultimaSiesta;
     private TextView cantidadDeSiestas;
+    public  SharedPreferences sharedPreferences;
     int caidas=0;
     int cantidadDeSiestasNum=0;
     private SensorManager mSensorManager;
@@ -51,6 +53,7 @@ public class MainScreen<Interval> extends AppCompatActivity implements SensorEve
         registerReceiver(networkStateReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.sharedPreferences = getSharedPreferences("USER",MODE_PRIVATE);
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         activarSensores();
         cantidadDeCaidas = (TextView) findViewById(R.id.cantidadDeCaidas);
@@ -61,9 +64,12 @@ public class MainScreen<Interval> extends AppCompatActivity implements SensorEve
         ultimaSiesta = (TextView) findViewById(R.id.ultimaSiesta);
         listView = (ListView) findViewById(R.id.lista);
         this.values = new ArrayList<String>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, values);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, values);
         listView.setAdapter(adapter);
+        loadData();
+        listView.invalidateViews();
+        this.cantidadDeCaidas.setText(String.valueOf(caidas));
+        this.cantidadDeSiestas.setText(String.valueOf(this.cantidadDeSiestasNum));
     }
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -116,11 +122,13 @@ public class MainScreen<Interval> extends AppCompatActivity implements SensorEve
     protected void onRestart()
     {
         super.onRestart();
+        registrarReciever();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        registrarReciever();
     }
 
     @Override
@@ -145,7 +153,6 @@ public class MainScreen<Interval> extends AppCompatActivity implements SensorEve
         filtro.addCategory("intent.category.LAUNCHER");
         registerReceiver(receiver, filtro);
     }
-
 
     @Override
     public void onSensorChanged(SensorEvent event)
@@ -220,12 +227,55 @@ public class MainScreen<Interval> extends AppCompatActivity implements SensorEve
             i.putExtra("datosJson", obj.toString());
             i.putExtra("type","event");
             startService(i);
-
+            saveData();
         } catch (JSONException e) {
             e.printStackTrace();
         }
         registrarReciever();
     }
 
+    private String listToString(List<String> list) {
+        StringBuilder csvList = new StringBuilder();
+        for(String s : list){
+            csvList.append(s);
+            csvList.append(",");
+        }
+        return csvList.toString();
+    }
+
+    private List<String> stringToList(String csvList) {
+        String[] items = csvList.split(",");
+        List<String> list = new ArrayList<String>();
+        for(int i=0; i < items.length; i++){
+            list.add(items[i]);
+        }
+        return list;
+    }
+
+    private void saveData() {
+        SharedPreferences sharedPreferencesObject = getSharedPreferences("USER", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferencesObject.edit();
+        Log.i("[DEBUG] Shared Pref", "Datos a guardar:" + listToString(this.values));
+        editor.putString("Event", listToString(this.values));
+        editor.apply();
+    }
+
+    private void loadData() {
+        SharedPreferences sharedPreferencesObject = getSharedPreferences("USER", MODE_PRIVATE);
+        String events = sharedPreferencesObject.getString("Event", "");
+        Log.i("[DEBUG] Shared Pref", "Datos recibidos:" + events);
+        if (events != "") {
+            ArrayList<String> listaDeEventos = (ArrayList<String>) stringToList(events);
+            for (String eventString:listaDeEventos) {
+                if(eventString.contains("Caida")){
+                    this.caidas++;
+                }
+                else if(eventString.contains("Siesta")){
+                    this.cantidadDeSiestasNum++;
+                }
+                this.values.add(eventString);
+            }
+        }
+    }
 
 }

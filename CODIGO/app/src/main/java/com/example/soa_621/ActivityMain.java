@@ -160,5 +160,26 @@ public class ActivityMain extends AppCompatActivity {
     public void accederALogin(View view) {
             startActivity(new Intent(ActivityMain.this, ActivityLogin.class));
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+    @Override
+    protected void onRestart()
+    {
+        super.onRestart();
+        registrarReciever();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registrarReciever();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+    }
 }
